@@ -141,7 +141,7 @@ namespace AdventOfCode2021
 
                 visited.Add(node);
 
-                GetBasinSize2(node, visited);
+                GetBasinSizeRecurse(node, visited);
             }
 
             foreach(var visit in visited)
