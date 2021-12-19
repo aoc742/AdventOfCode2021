@@ -60,8 +60,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <Compile Include="Day10.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resources\Day10Input.txt" />
     <Content Include="Resources\Day1Input.txt" />
     <Content Include="Resources\Day2Input.txt" />
     <Content Include="Resources\Day3Input.txt" />
