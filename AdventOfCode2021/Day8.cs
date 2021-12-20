@@ -131,16 +131,16 @@ namespace AdventOfCode2021
                  */
                 // each number contains the below segments in its signal
                 // "signal      = list of segments
-                string one      = "25";
-                string seven    = "025";
-                string four     = "1235";
-                string two      = "02346";
-                string three    = "02356";
-                string five     = "01356";
-                string zero     = "012456";
-                string six      = "013456";
-                string nine     = "012356";
-                string eight    = "0123456";
+                //string one      = "25";
+                //string seven    = "025";
+                //string four     = "1235";
+                //string two      = "02346";
+                //string three    = "02356";
+                //string five     = "01356";
+                //string zero     = "012456";
+                //string six      = "013456";
+                //string nine     = "012356";
+                //string eight    = "0123456";
 
                 string oneSignal = this.Inputs.First(input => input.Length == 2);
                 string sevenSignal = this.Inputs.First(input => input.Length == 3);
