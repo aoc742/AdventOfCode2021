@@ -12,7 +12,7 @@ namespace AdventOfCode2021
         private Node _startNode;
         private Node _endNode;
         public List<Node> Nodes = new List<Node>();
-        List<LinkedList<Node>> Paths = new List<LinkedList<Node>>();
+        List<List<Node>> Paths = new List<List<Node>>();
         
         public void Start()
         {
@@ -45,38 +45,70 @@ namespace AdventOfCode2021
             this._endNode = this.Nodes.First(node => node.Name == "end");
 
             // Begin
-            LinkedList<Node> visited = new LinkedList<Node>();
-            visited.AddFirst(this._startNode);
-            this.BreadthFirst(this.Nodes, visited);
+            List<Node> visited = new List<Node>();
+            visited.Add(this._startNode);
+            this.DepthFirst(visited, false);
 
+            //int count = 0;
+            //foreach (var path in this.Paths)
+            //{
+            //    count++;
+            //    Console.WriteLine($"Path {count}: {string.Join("->", path.Select(p => p.Name).ToList())}->end");
+            //}
+            Console.WriteLine($"Part 1: {this.Paths.Count} paths");
+
+            // Part 2
+            this.Paths.Clear();
+            visited.Clear();
+            visited.Add(this._startNode);
+            this.DepthFirst(visited, true);
         }
 
-        public void BreadthFirst(List<Node> graph, LinkedList<Node> visited)
+        public void DepthFirst(IEnumerable<Node> test, bool canUseSingleLowercaseCaveTwice)
         {
-            LinkedList<Node> nodes = new LinkedList<Node>(visited.Last().Connections.ToArray());
+            var visited = test.ToList();
+            List<Node> nodes = new List<Node>(visited.Last().Connections.ToArray());
 
             // In breadth-first, recursion needs to come after visiting adjacent nodes
             foreach (Node node in nodes)
             {
                 // stopping criteria
-                if (node.Equals(this._startNode) || node.Equals(this._endNode))
+                if (node.Equals(this._endNode))
+                {
+                    this.Paths.Add(visited);
+                    continue;
+                }
+                if (node.Equals(this._startNode))
                 {
                     continue;
                 }
                 if (visited.Contains(node) && char.IsLower(node.Name[0]))
-                {
-                    continue;
+                {             
+                    if (canUseSingleLowercaseCaveTwice && this.ContainsSingleLowercaseCaveTwice(visited))
+                    {
+                        continue;           
+                    }
                 }
 
-                visited.AddLast(node);
+                visited.Add(node);
 
                 // Recursion
-                BreadthFirst(graph, visited);
-
-                visited.RemoveLast();
+                DepthFirst(visited.ToList(), canUseSingleLowercaseCaveTwice);
+                visited.RemoveAt(visited.Count() - 1);
             }
+        }
 
-            this.Paths.Add(visited);
+        private bool ContainsSingleLowercaseCaveTwice(IEnumerable<Node> nodes)
+        {
+            var duplicates = nodes.GroupBy(node => node.Name).Where(x => x.Count() > 1).Select(y => y.Key).ToList();
+            foreach (var duplicate in duplicates)
+            {
+                if (char.IsLower(duplicate[0]))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         public class Node
