@@ -66,9 +66,14 @@ namespace AdventOfCode2021
             #endregion Day 11
 
             #region Day 12
-            Day12 day12 = new Day12();
-            day12.Start();
+            //Day12 day12 = new Day12();
+            //day12.Start();
             #endregion Day 12
+
+            #region Day 13
+            Day13 day13 = new Day13();
+            day13.Start();
+            #endregion Day 13
 
             Console.WriteLine("Press Enter to continue...");
             Console.ReadLine();
