@@ -47,21 +47,65 @@ namespace AdventOfCode2021
             // Begin
             List<Node> visited = new List<Node>();
             visited.Add(this._startNode);
-            this.DepthFirst(visited, false);
+            //this.DepthFirst(visited, false);
+            BreadthFirst(visited, false);
 
-            //int count = 0;
-            //foreach (var path in this.Paths)
-            //{
-            //    count++;
-            //    Console.WriteLine($"Path {count}: {string.Join("->", path.Select(p => p.Name).ToList())}->end");
-            //}
             Console.WriteLine($"Part 1: {this.Paths.Count} paths");
 
             // Part 2
             this.Paths.Clear();
             visited.Clear();
             visited.Add(this._startNode);
-            this.DepthFirst(visited, true);
+            //this.DepthFirst(visited, true);
+            BreadthFirst(visited, true);
+
+            Console.WriteLine($"Part 2: {this.Paths.Count} paths");
+        }
+
+        public void BreadthFirst(List<Node> startingNodeList, bool canUseSingleLowercaseCaveTwice)
+        {
+            // Create a queue for BFS
+            Queue<List<Node>> queue = new Queue<List<Node>>();
+
+            queue.Enqueue(startingNodeList);
+            while(queue.Count > 0)
+            {
+                // Dequeue
+                List<Node> currentNodeList = queue.Dequeue();
+
+                // Get adjacent positions
+                List<Node> adjacentNodes = new List<Node>(currentNodeList.Last().Connections.ToArray());
+                foreach(var node in adjacentNodes)
+                {
+                    // if not stopping condition
+                    if (node == this._endNode)
+                    {
+                        // add to Paths. 
+                        // but what path?
+                        this.Paths.Add(currentNodeList);
+                    }
+                    else if (node == this._startNode)
+                    {
+                        continue;
+                    }
+                    else if (currentNodeList.Contains(node) && char.IsLower(node.Name[0]))
+                    {
+                        if (canUseSingleLowercaseCaveTwice && !this.ContainsSingleLowercaseCaveTwice(currentNodeList))
+                        {
+                            List<Node> newNodeList = new List<Node>(currentNodeList);
+                            newNodeList.Add(node);
+                            queue.Enqueue(newNodeList);
+                        }
+                        continue;
+                    }
+                    else
+                    {
+                        List<Node> newNodeList = new List<Node>(currentNodeList);
+                        newNodeList.Add(node);
+                        queue.Enqueue(newNodeList);
+                    }
+                }
+            }
         }
 
         public void DepthFirst(IEnumerable<Node> test, bool canUseSingleLowercaseCaveTwice)
